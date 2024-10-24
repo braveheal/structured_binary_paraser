@@ -1,2 +1,5 @@
 # structured_binary_paraser
-A stuctured binary parser and parsing code generator 
+A cross platform stuctured binary parser and parsing code generator written in pure c. 
+
+Installation
+
