@@ -15,8 +15,9 @@ to build SBP you need:
 
 Once you have the dependency tools installed. you can use CMAKE to build and install SBP.
 
-``
-  cmake .
-  cmake --build .
-``
+
+
+    cmake .  
+    cmake --build .
+
 
