@@ -9,3 +9,5 @@ to build SBP you need:
 2. pkg-config
 3. [glib-2.0](https://github.com/GNOME/glib?tab=readme-ov-file)>= 2.64
 4. [json-glib-1.0](https://github.com/GNOME/json-glib)
+5. [re2c](https://re2c.org/) lexer generator
+6. [lemon](https://sqlite.org/src/doc/trunk/doc/lemon.html) Parser Generator
