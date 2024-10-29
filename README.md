@@ -1,5 +1,6 @@
 # structured_binary_paraser (SBP)
 A cross platform stuctured binary parser and parsing code generator written in pure c. the project was first intend to parse Qualcomm diagnostics log (DLF) file format as well as other structed binary file formats.
+- high performance, 
 
 ## Installation
 
@@ -9,9 +10,10 @@ to build SBP you need:
 2. CMAKE
 3. pkg-config
 4. [glib-2.0](https://github.com/GNOME/glib?tab=readme-ov-file)>= 2.64
-5. [json-glib-1.0](https://github.com/GNOME/json-glib)
-6. [re2c](https://re2c.org/) lexer generator
-7. [lemon](https://sqlite.org/src/doc/trunk/doc/lemon.html) Parser Generator
+   - a [Meson build system](https://mesonbuild.com/) is required to build glib.
+6. [json-glib-1.0](https://github.com/GNOME/json-glib)
+7. [re2c](https://re2c.org/) lexer generator
+8. [lemon](https://sqlite.org/src/doc/trunk/doc/lemon.html) Parser Generator
    - [windows build](https://github.com/deplinenoise/lemon-win32)
 
 Once you have the dependency tools installed. you can use CMAKE to build and install SBP.
@@ -84,3 +86,5 @@ Uint8 Pcmaxfc[0==V];
 Uint8 R[0==V];
 } SCell[NumCxSetBits];
 ```
+## Usage
+once you have the prerequsites installed. 
