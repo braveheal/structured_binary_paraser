@@ -1,0 +1,1207 @@
+typealias integer {size = 1;}  := Uint1;
+typealias integer {size = 2;}  := Uint2;
+typealias integer {size = 3;}  := Uint3;
+typealias integer {size = 4;}  := Uint4;
+typealias integer {size = 5;}  := Uint5;
+typealias integer {size = 6;}  := Uint6;
+typealias integer {size = 7;}  := Uint7;
+typealias integer {size = 8;}  := Uint8;
+typealias integer {size = 9;}  := Uint9;
+typealias integer {size = 10;}  := Uint10;
+typealias integer {size = 11;}  := Uint11;
+typealias integer {size = 12;}  := Uint12;
+typealias integer {size = 13;}  := Uint13;
+typealias integer {size = 14;}  := Uint14;
+typealias integer {size = 15;}  := Uint15;
+typealias integer {size = 16;} := Uint16;
+typealias integer {size = 17;} := Uint17;
+typealias integer {size = 18;} := Uint18;
+typealias integer {size = 19;} := Uint19;
+typealias integer {size = 20;} := Uint20;
+typealias integer {size = 21;} := Uint21;
+typealias integer {size = 22;} := Uint22;
+typealias integer {size = 23;} := Uint23;
+typealias integer {size = 24;} := Uint24;
+typealias integer {size = 25;} := Uint25;
+typealias integer {size = 26;} := Uint26;
+typealias integer {size = 27;} := Uint27;
+typealias integer {size = 28;} := Uint28;
+typealias integer {size = 29;} := Uint29;
+typealias integer {size = 30;} := Uint30;
+typealias integer {size = 31;} := Uint31;
+typealias integer {size = 32;} := Uint32;
+typealias integer {size = 40;} := Uint40;
+typealias integer {size = 64;} := Uint64;
+typealias integer {size = 64;} := timestamp_t;
+typealias integer {size = 1; signed = true;}  := Int1;
+typealias integer {size = 2; signed = true;}  := Int2;
+typealias integer {size = 3; signed = true;}  := Int3;
+typealias integer {size = 4; signed = true;}  := Int4;
+typealias integer {size = 5; signed = true;}  := Int5;
+typealias integer {size = 6; signed = true;}  := Int6;
+typealias integer {size = 7; signed = true;}  := Int7;
+typealias integer {size = 8; signed = true;}  := Int8;
+typealias integer {size = 9; signed = true;}  := Int9;
+typealias integer {size = 10; signed = true;} := Int10;
+typealias integer {size = 11; signed = true;} := Int11;
+typealias integer {size = 12; signed = true;} := Int12;
+typealias integer {size = 13; signed = true;} := Int13;
+typealias integer {size = 15; signed = true;} := Int15;
+typealias integer {size = 16; signed = true;} := Int16;
+typealias integer {size = 21; signed = true;} := Int21;
+typealias integer {size = 25; signed = true;} := Int25;
+typealias integer {size = 32; signed = true;} := Int32;
+typealias integer {size = 64; signed = true;} := Int64;
+typealias integer {size = 8;}  := Bool;
+typealias integer {size = 1;}  := Bool1;
+typealias integer {size = 8;}  := Blob;
+typealias floating_point {
+    size = 32;
+} := Float32;
+typealias floating_point {
+    size = 64;
+} := Float64;
+event {
+    id = 0;
+	name = "Header";
+	fields := struct {
+		Uint16 len;
+		Uint16 logcode;
+		timestamp_t timestamp;
+	};
+};
+event {
+id = 0xB872;
+name = "NR5G L2 UL TB";
+fields := struct
+{
+enum : Uint32 {UnknownVersions = Default,Version1 = 1,Version2 = 2,Version3 = 3,Version4 = 4,Version5 = 5} Version;
+variant <Version>
+{
+struct
+{
+Uint8 UnsupportedVersion[^.^.^.Header.len-16];
+} UnknownVersions;
+struct
+{
+struct
+{
+Uint4 NumTTI;
+skip 28;
+} Meta;
+struct
+{
+struct
+{
+struct
+{
+Uint8 SlotNumber;
+skip 8;
+Uint10 FN;
+skip 6;
+} SysTime;
+Uint4 NumTB;
+skip 28;
+} TTIInfoMeta;
+struct
+{
+Uint6 Numerology;
+Uint4 HarqID;
+Uint4 CarrierID;
+enum: Uint3 { CONNECTED=0,CRACH=1,IRACH=2 } TBType;
+enum: Uint2 { C_RNTI=0,T_RNTI=1 } RNTIType;
+Bool1 StartPDUSeg;
+Uint10 NumCompletePDU;
+Bool1 EndPDUSeg;
+skip 1;
+struct
+{
+Uint1 IsBSRPresent;
+Uint3 BSR;
+Uint1 IsPHRPresent;
+Uint6 PHR;
+Uint1 IsCGCPresent;
+enum: Uint3 { CFG_GRANT_CNF=0 } CGC;
+Uint1 IsCRNTIPresent;
+enum: Uint3 { CRACH=0 } CRNTI;
+skip 13;
+} MCETriggerReason;
+Uint20 GrantSize;
+Uint20 BytesBuilt;
+enum: Uint4 { NO_BSR=0,SHORT_BSR=1,LONG_BSR=2,SHORT_TRUNCATED_BSR=3,LONG_TRUNCATED_BSR=4,CANCELLED_BSR=5,BSR_TYPE_INVALID=6 } BSRType;
+Uint6 MCELength;
+skip 14;
+struct
+{
+struct
+{
+enum: Uint6 { MC4_PHR=54,CGC=55,MC1_PHR=56,S_PHR=57,C_RNTI=58,ST_BSR=59,LT_BSR=60,S_BSR=61,L_BSR=62 } MCEType;
+Uint1 F[((54==MCEType||56==MCEType)||60==MCEType)||62==MCEType];
+Uint1 R[!(((54==MCEType||56==MCEType)||60==MCEType)||62==MCEType)];
+Uint1 R1;
+Uint8 Length[((54==MCEType||56==MCEType)||60==MCEType)||62==MCEType];
+struct
+{
+Uint1 R;
+Uint1 C1;
+Uint1 C2;
+Uint1 C3;
+Uint1 C4;
+Uint1 C5;
+Uint1 C6;
+Uint1 C7;
+Uint1 C8;
+Uint1 C9;
+Uint1 C10;
+Uint1 C11;
+Uint1 C12;
+Uint1 C13;
+Uint1 C14;
+Uint1 C15;
+Uint1 C16;
+Uint1 C17;
+Uint1 C18;
+Uint1 C19;
+Uint1 C20;
+Uint1 C21;
+Uint1 C22;
+Uint1 C23;
+Uint1 C24;
+Uint1 C25;
+Uint1 C26;
+Uint1 C27;
+Uint1 C28;
+Uint1 C29;
+Uint1 C30;
+Uint1 C31;
+Uint32 CxR;
+Uint32 NumCxSetBits = (((((((((((((((((((((((((((((C1 + C2) + C3) + C4) + C5) + C6) + C7) + C8) + C9) + C10) + C11) + C12) + C13) + C14) + C15) + C16) + C17) + C18) + C19) + C20) + C21) + C22) + C23) + C24) + C25) + C26) + C27) + C28) + C29) + C30) + C31;
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint6 Pcmaxfc;
+Uint2 R;
+} PhFieldsStruct[NumCxSetBits];
+} Mc4Phr[54==MCEType];
+/*struct
+{
+} Cgc[55==MCEType];*/
+struct
+{
+Uint1 R;
+Uint1 C1;
+Uint1 C2;
+Uint1 C3;
+Uint1 C4;
+Uint1 C5;
+Uint1 C6;
+Uint1 C7;
+Uint8 CxR;
+Uint8 NumCxSetBits = (((((C1 + C2) + C3) + C4) + C5) + C6) + C7;
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint8 Pcmaxfc[0==V];
+Uint8 R[0==V];
+} PhFieldsStruct[NumCxSetBits];
+} Mc1Phr[56==MCEType];
+struct
+{
+Uint5 BSRIndex;
+Uint3 BSRLCG;
+} ShortBsr[61==MCEType];
+struct
+{
+Uint8 CRNTI[2];
+} CrntiStruct[58==MCEType];
+struct
+{
+Uint5 BSRIndex;
+Uint3 BSRLCG;
+} ShortTruncatedBsr[59==MCEType];
+struct
+{
+Uint1 LCG0;
+Uint1 LCG1;
+Uint1 LCG2;
+Uint1 LCG3;
+Uint1 LCG4;
+Uint1 LCG5;
+Uint1 LCG6;
+Uint1 LCG7;
+Uint8 LCGx;
+Uint8 BufferSize = ((((((LCG0 + LCG1) + LCG2) + LCG3) + LCG4) + LCG5)+ LCG6) + LCG7;
+struct
+{
+Uint8 BSRLCG = ^.LCGx;
+Uint8 BSRIndex;
+} Buffer[BufferSize];
+} LongTruncatedBsr[60==MCEType];
+struct
+{
+Uint6 PH;
+Uint2 R;
+Uint6 Pcmaxfc;
+Uint2 R1;
+} SinglePhr[57==MCEType];
+struct
+{
+Uint1 LCG0;
+Uint1 LCG1;
+Uint1 LCG2;
+Uint1 LCG3;
+Uint1 LCG4;
+Uint1 LCG5;
+Uint1 LCG6;
+Uint1 LCG7;
+Uint8 LCGx;
+Uint8 BufferSize = ((((((LCG0 + LCG1) + LCG2) + LCG3) + LCG4) + LCG5)+ LCG6) + LCG7;
+struct
+{
+Uint8 BSRLCG = ^.LCGx;
+Uint8 BSRIndex;
+} Buffer[BufferSize];
+} LongBsr[62==MCEType];
+} McePayload;
+} McePayloadSize;
+} TBInfo[TTIInfoMeta.NumTB];
+} TTIInfo[Meta.NumTTI];
+} Version1;
+struct
+{
+struct
+{
+Uint4 NumTTI;
+Uint1 IsType2Scell;
+Uint1 IsType2OtherCell;
+skip 26;
+} Meta;
+struct
+{
+struct
+{
+struct
+{
+Uint8 SlotNumber;
+skip 8;
+Uint10 FN;
+skip 6;
+} SysTime;
+Uint4 NumTB;
+skip 28;
+} TTIInfoMeta;
+struct
+{
+Uint6 Numerology;
+Uint4 HarqID;
+Uint4 CarrierID;
+enum: Uint3 { CONNECTED=0,CRACH=1,IRACH=2 } TBType;
+enum: Uint2 { C_RNTI=0,T_RNTI=1 } RNTIType;
+Bool1 StartPDUSeg;
+Uint10 NumCompletePDU;
+Bool1 EndPDUSeg;
+skip 1;
+struct
+{
+Uint1 IsBSRPresent;
+Uint3 BSR;
+Uint1 IsPHRPresent;
+Uint6 PHR;
+Uint1 IsCGCPresent;
+enum: Uint3 { CFG_GRANT_CNF=0 } CGC;
+Uint1 IsCRNTIPresent;
+enum: Uint3 { CRACH=0 } CRNTI;
+skip 13;
+} MCETriggerReason;
+Uint20 GrantSize;
+Uint20 BytesBuilt;
+enum: Uint4 { NO_BSR=0,SHORT_BSR=1,LONG_BSR=2,SHORT_TRUNCATED_BSR=3,LONG_TRUNCATED_BSR=4,CANCELLED_BSR=5,BSR_TYPE_INVALID=6 } BSRType;
+Uint6 MCELength;
+skip 14;
+struct
+{
+struct
+{
+enum: Uint6 { MC4_PHR=54,CGC=55,MC1_PHR=56,S_PHR=57,C_RNTI=58,ST_BSR=59,LT_BSR=60,S_BSR=61,L_BSR=62 } MCEType;
+Uint1 F[((54==MCEType||56==MCEType)||60==MCEType)||62==MCEType];
+Uint1 R[!(((54==MCEType||56==MCEType)||60==MCEType)||62==MCEType)];
+Uint1 R1;
+Uint8 Length[((54==MCEType||56==MCEType)||60==MCEType)||62==MCEType];
+struct
+{
+Uint1 R;
+Uint1 C1;
+Uint1 C2;
+Uint1 C3;
+Uint1 C4;
+Uint1 C5;
+Uint1 C6;
+Uint1 C7;
+Uint1 C8;
+Uint1 C9;
+Uint1 C10;
+Uint1 C11;
+Uint1 C12;
+Uint1 C13;
+Uint1 C14;
+Uint1 C15;
+Uint1 C16;
+Uint1 C17;
+Uint1 C18;
+Uint1 C19;
+Uint1 C20;
+Uint1 C21;
+Uint1 C22;
+Uint1 C23;
+Uint1 C24;
+Uint1 C25;
+Uint1 C26;
+Uint1 C27;
+Uint1 C28;
+Uint1 C29;
+Uint1 C30;
+Uint1 C31;
+Uint32 CxR;
+Uint32 NumCxSetBits = (((((((((((((((((((((((((((((C1 + C2) + C3) + C4) + C5) + C6) + C7) + C8) + C9) + C10) + C11) + C12) + C13) + C14) + C15) + C16) + C17) + C18) + C19) + C20) + C21) + C22) + C23) + C24) + C25) + C26) + C27) + C28) + C29) + C30) + C31;
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint8 Pcmaxfc[0==V];
+Uint8 R[0==V];
+} Type2SpCell[^.^.^.^.^.Meta.IsType2Scell];
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint8 Pcmaxfc[0==V];
+Uint8 R[0==V];
+} Type2OtherCell[^.^.^.^.^.Meta.IsType2OtherCell];
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint8 Pcmaxfc[0==V];
+Uint8 R[0==V];
+} Type1PCell;
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint8 Pcmaxfc[0==V];
+Uint8 R[0==V];
+} SCell[NumCxSetBits];
+} Mc4Phr[54==MCEType];
+/*struct
+{
+} Cgc[55==MCEType];*/
+struct
+{
+Uint1 R;
+Uint1 C1;
+Uint1 C2;
+Uint1 C3;
+Uint1 C4;
+Uint1 C5;
+Uint1 C6;
+Uint1 C7;
+Uint8 CxR;
+Uint8 NumCxSetBits = (((((C1 + C2) + C3) + C4) + C5) + C6) + C7;
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint8 Pcmaxfc[0==V];
+Uint8 R[0==V];
+} Type2SpCell[^.^.^.^.^.Meta.IsType2Scell];
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint8 Pcmaxfc[0==V];
+Uint8 R[0==V];
+} Type2OtherCell[^.^.^.^.^.Meta.IsType2OtherCell];
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint8 Pcmaxfc[0==V];
+Uint8 R[0==V];
+} Type1PCell;
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint8 Pcmaxfc[0==V];
+Uint8 R[0==V];
+} SCell[NumCxSetBits];
+} Mc1Phr[56==MCEType];
+struct
+{
+Uint5 BSRIndex;
+Uint3 BSRLCG;
+} ShortBsr[61==MCEType];
+struct
+{
+Uint8 CRNTI[2];
+} CrntiStruct[58==MCEType];
+struct
+{
+Uint5 BSRIndex;
+Uint3 BSRLCG;
+} ShortTruncatedBsr[59==MCEType];
+struct
+{
+Uint1 LCG0;
+Uint1 LCG1;
+Uint1 LCG2;
+Uint1 LCG3;
+Uint1 LCG4;
+Uint1 LCG5;
+Uint1 LCG6;
+Uint1 LCG7;
+Uint8 LCGx;
+Uint8 BufferSize = ((((((LCG0 + LCG1) + LCG2) + LCG3) + LCG4) + LCG5)+ LCG6) + LCG7;
+struct
+{
+Uint8 BSRLCG = ^.LCGx;
+Uint8 BSRIndex;
+} Buffer[BufferSize];
+} LongTruncatedBsr[60==MCEType];
+struct
+{
+Uint6 PH;
+Uint2 R;
+Uint6 Pcmaxfc;
+Uint2 R1;
+} SinglePhr[57==MCEType];
+struct
+{
+Uint1 LCG0;
+Uint1 LCG1;
+Uint1 LCG2;
+Uint1 LCG3;
+Uint1 LCG4;
+Uint1 LCG5;
+Uint1 LCG6;
+Uint1 LCG7;
+Uint8 LCGx;
+Uint8 BufferSize = ((((((LCG0 + LCG1) + LCG2) + LCG3) + LCG4) + LCG5)+ LCG6) + LCG7;
+struct
+{
+Uint8 BSRLCG = ^.LCGx;
+Uint8 BSRIndex;
+} Buffer[BufferSize];
+} LongBsr[62==MCEType];
+} McePayload;
+} McePayloadSize;
+} TBInfo[TTIInfoMeta.NumTB];
+} TTIInfo[Meta.NumTTI];
+} Version2;
+struct
+{
+struct
+{
+Uint4 NumTTI;
+Uint1 IsType2Scell;
+Uint1 IsType2OtherCell;
+skip 26;
+} Meta;
+struct
+{
+struct
+{
+struct
+{
+Uint8 SlotNumber;
+skip 8;
+Uint10 FN;
+skip 6;
+} SysTime;
+Uint4 NumTB;
+skip 28;
+} TTIInfoMeta;
+struct
+{
+Uint6 Numerology;
+Uint4 HarqID;
+Uint4 CarrierID;
+enum: Uint3 { CONNECTED=0,CRACH=1,IRACH=2 } TBType;
+enum: Uint2 { C_RNTI=0,T_RNTI=1 } RNTIType;
+Bool1 StartPDUSeg;
+Uint10 NumCompletePDU;
+Bool1 EndPDUSeg;
+skip 1;
+struct
+{
+Uint1 IsBSRPresent;
+Uint3 BSR;
+Uint1 IsPHRPresent;
+Uint6 PHR;
+Uint1 IsCGCPresent;
+enum: Uint3 { CFG_GRANT_CNF=0 } CGC;
+Uint1 IsCRNTIPresent;
+enum: Uint3 { CRACH=0 } CRNTI;
+skip 13;
+} MCETriggerReason;
+Uint20 GrantSize;
+Uint20 BytesBuilt;
+enum: Uint4 { NO_BSR=0,SHORT_BSR=1,LONG_BSR=2,SHORT_TRUNCATED_BSR=3,LONG_TRUNCATED_BSR=4,CANCELLED_BSR=5,BSR_TYPE_INVALID=6 } BSRType;
+Uint6 MCELength;
+skip 14;
+struct
+{
+struct
+{
+enum: Uint6 { MC4_PHR=54,CGC=55,MC1_PHR=56,S_PHR=57,C_RNTI=58,ST_BSR=59,LT_BSR=60,S_BSR=61,L_BSR=62 } MCEType;
+Uint1 F[((54==MCEType||56==MCEType)||60==MCEType)||62==MCEType];
+Uint1 R[!(((54==MCEType||56==MCEType)||60==MCEType)||62==MCEType)];
+Uint1 R1;
+Uint8 Length[((54==MCEType||56==MCEType)||60==MCEType)||62==MCEType];
+struct
+{
+Uint1 R;
+Uint1 C1;
+Uint1 C2;
+Uint1 C3;
+Uint1 C4;
+Uint1 C5;
+Uint1 C6;
+Uint1 C7;
+Uint1 C8;
+Uint1 C9;
+Uint1 C10;
+Uint1 C11;
+Uint1 C12;
+Uint1 C13;
+Uint1 C14;
+Uint1 C15;
+Uint1 C16;
+Uint1 C17;
+Uint1 C18;
+Uint1 C19;
+Uint1 C20;
+Uint1 C21;
+Uint1 C22;
+Uint1 C23;
+Uint1 C24;
+Uint1 C25;
+Uint1 C26;
+Uint1 C27;
+Uint1 C28;
+Uint1 C29;
+Uint1 C30;
+Uint1 C31;
+Uint32 NumCxSetBits = (((((((((((((((((((((((((((((C1 + C2) + C3) + C4) + C5) + C6) + C7) + C8) + C9) + C10) + C11) + C12) + C13) + C14) + C15) + C16) + C17) + C18) + C19) + C20) + C21) + C22) + C23) + C24) + C25) + C26) + C27) + C28) + C29) + C30) + C31;
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint6 Pcmaxfc[0==V];
+Uint2 R[0==V];
+} Type2SpCell[^.^.^.^.^.Meta.IsType2Scell];
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint6 Pcmaxfc[0==V];
+Uint2 R[0==V];
+} Type2OtherCell[^.^.^.^.^.Meta.IsType2OtherCell];
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint6 Pcmaxfc[0==V];
+Uint2 R[0==V];
+} Type1PCell;
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint6 Pcmaxfc[0==V];
+Uint2 R[0==V];
+} SCell[NumCxSetBits];
+} Mc4Phr[54==MCEType];
+/*struct
+{
+} Cgc[55==MCEType];*/
+struct
+{
+Uint1 R;
+Uint1 C1;
+Uint1 C2;
+Uint1 C3;
+Uint1 C4;
+Uint1 C5;
+Uint1 C6;
+Uint1 C7;
+Uint8 CxR=C7<<7+C6<<6+C5<<5+C4<<4+C3<<3+C2<<2+C1;
+Uint8 NumCxSetBits = (((((C1 + C2) + C3) + C4) + C5) + C6) + C7;
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint6 Pcmaxfc[0==V];
+Uint2 R[0==V];
+} Type2SpCell[^.^.^.^.^.Meta.IsType2Scell];
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint6 Pcmaxfc[0==V];
+Uint2 R[0==V];
+} Type2OtherCell[^.^.^.^.^.Meta.IsType2OtherCell];
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint6 Pcmaxfc[0==V];
+Uint2 R[0==V];
+} Type1PCell;
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint6 Pcmaxfc[0==V];
+Uint2 R[0==V];
+} SCell[NumCxSetBits];
+} Mc1Phr[56==MCEType];
+struct
+{
+Uint5 BSRIndex;
+Uint3 BSRLCG;
+} ShortBsr[61==MCEType];
+struct
+{
+Uint8 CRNTI[2];
+} CrntiStruct[58==MCEType];
+struct
+{
+Uint5 BSRIndex;
+Uint3 BSRLCG;
+} ShortTruncatedBsr[59==MCEType];
+struct
+{
+Uint1 LCG0;
+Uint1 LCG1;
+Uint1 LCG2;
+Uint1 LCG3;
+Uint1 LCG4;
+Uint1 LCG5;
+Uint1 LCG6;
+Uint1 LCG7;
+Uint8 LCGx=LCG7<<7+LCG6<<6+LCG5<<5+LCG4<<4+LCG3<<3+LCG2<<2+LCG1;
+Uint8 BufferSize = ((((((LCG0 + LCG1) + LCG2) + LCG3) + LCG4) + LCG5)+ LCG6) + LCG7;
+struct
+{
+Uint8 BSRLCG = ^.LCGx;
+Uint8 BSRIndex;
+} Buffer[BufferSize];
+} LongTruncatedBsr[60==MCEType];
+struct
+{
+Uint6 PH;
+Uint2 R;
+Uint6 Pcmaxfc;
+Uint2 R1;
+} SinglePhr[57==MCEType];
+struct
+{
+Uint1 LCG0;
+Uint1 LCG1;
+Uint1 LCG2;
+Uint1 LCG3;
+Uint1 LCG4;
+Uint1 LCG5;
+Uint1 LCG6;
+Uint1 LCG7;
+Uint8 LCGx=LCG7<<7+LCG6<<6+LCG5<<5+LCG4<<4+LCG3<<3+LCG2<<2+LCG1;
+Uint8 BufferSize = ((((((LCG0 + LCG1) + LCG2) + LCG3) + LCG4) + LCG5)+ LCG6) + LCG7;
+struct
+{
+Uint8 BSRLCG = ^.LCGx;
+Uint8 BSRIndex;
+} Buffer[BufferSize];
+} LongBsr[62==MCEType];
+} McePayload[lenvar(^.MCELength)];
+} McePayloadSize;
+} TBInfo[TTIInfoMeta.NumTB];
+} TTIInfo[Meta.NumTTI];
+} Version3;
+struct
+{
+struct
+{
+Uint4 NumTTI;
+Uint1 IsType2Scell;
+Uint1 IsType2OtherCell;
+skip 26;
+} Meta;
+struct
+{
+struct
+{
+struct
+{
+Uint8 SlotNumber;
+skip 8;
+Uint10 FN;
+skip 6;
+} SysTime;
+Uint4 NumTB;
+skip 28;
+} TTIInfoMeta;
+struct
+{
+Uint3 Numerology;
+Uint4 HarqID;
+Uint4 CarrierID;
+enum: Uint3 { CONNECTED=0,CRACH=1,IRACH=2 } TBType;
+enum: Uint2 { C_RNTI=0,T_RNTI=1 } RNTIType;
+Bool1 StartPDUSeg;
+Uint10 NumCompletePDU;
+Bool1 EndPDUSeg;
+skip 4;
+Uint32 GrantSize;
+Uint32 BytesBuilt;
+Uint8 MCEReqBitmask;
+Uint8 MCEBuiltBitmask;
+Uint6 PHRReason;
+Uint3 BSRReason;
+enum: Uint4 { NO_BSR=0,SHORT_BSR=1,LONG_BSR=2,SHORT_TRUNCATED_BSR=3,LONG_TRUNCATED_BSR=4,CANCELLED_BSR=5,BSR_TYPE_INVALID=6 } BSRType;
+enum: Uint2 { MIN=0,TIMER_EXP=1,NO_GRANT=2,INVALID=3 } PHRCancelReason;
+skip 1;
+Uint6 MCELength;
+skip 26;
+struct
+{
+struct
+{
+enum: Uint6 { MC4_PHR=54,CGC=55,MC1_PHR=56,S_PHR=57,C_RNTI=58,ST_BSR=59,LT_BSR=60,S_BSR=61,L_BSR=62 } MCEType;
+Uint1 F[((54==MCEType||56==MCEType)||60==MCEType)||62==MCEType];
+Uint1 R[!(((54==MCEType||56==MCEType)||60==MCEType)||62==MCEType)];
+Uint1 R1;
+Uint8 Length[((54==MCEType||56==MCEType)||60==MCEType)||62==MCEType];
+struct
+{
+Uint1 R;
+Uint1 C1;
+Uint1 C2;
+Uint1 C3;
+Uint1 C4;
+Uint1 C5;
+Uint1 C6;
+Uint1 C7;
+Uint1 C8;
+Uint1 C9;
+Uint1 C10;
+Uint1 C11;
+Uint1 C12;
+Uint1 C13;
+Uint1 C14;
+Uint1 C15;
+Uint1 C16;
+Uint1 C17;
+Uint1 C18;
+Uint1 C19;
+Uint1 C20;
+Uint1 C21;
+Uint1 C22;
+Uint1 C23;
+Uint1 C24;
+Uint1 C25;
+Uint1 C26;
+Uint1 C27;
+Uint1 C28;
+Uint1 C29;
+Uint1 C30;
+Uint1 C31;
+Uint32 CxR;
+Uint32 NumCxSetBits = (((((((((((((((((((((((((((((C1 + C2) + C3) + C4) + C5) + C6) + C7) + C8) + C9) + C10) + C11) + C12) + C13) + C14) + C15) + C16) + C17) + C18) + C19) + C20) + C21) + C22) + C23) + C24) + C25) + C26) + C27) + C28) + C29) + C30) + C31;
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint8 Pcmaxfc[0==V];
+Uint8 R[0==V];
+} Type2SpCell[^.^.^.^.^.Meta.IsType2Scell];
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint8 Pcmaxfc[0==V];
+Uint8 R[0==V];
+} Type2OtherCell[^.^.^.^.^.Meta.IsType2OtherCell];
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint8 Pcmaxfc[0==V];
+Uint8 R[0==V];
+} Type1PCell;
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint8 Pcmaxfc[0==V];
+Uint8 R[0==V];
+} SCell[NumCxSetBits];
+} Mc4Phr[54==MCEType];
+/*struct
+{
+} Cgc[55==MCEType];*/
+struct
+{
+Uint1 R;
+Uint1 C1;
+Uint1 C2;
+Uint1 C3;
+Uint1 C4;
+Uint1 C5;
+Uint1 C6;
+Uint1 C7;
+Uint8 CxR;
+Uint8 NumCxSetBits = (((((C1 + C2) + C3) + C4) + C5) + C6) + C7;
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint8 Pcmaxfc[0==V];
+Uint8 R[0==V];
+} Type2SpCell[^.^.^.^.^.Meta.IsType2Scell];
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint8 Pcmaxfc[0==V];
+Uint8 R[0==V];
+} Type2OtherCell[^.^.^.^.^.Meta.IsType2OtherCell];
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint8 Pcmaxfc[0==V];
+Uint8 R[0==V];
+} Type1PCell;
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint8 Pcmaxfc[0==V];
+Uint8 R[0==V];
+} SCell[NumCxSetBits];
+} Mc1Phr[56==MCEType];
+struct
+{
+Uint5 BSRIndex;
+Uint3 BSRLCG;
+} ShortBsr[61==MCEType];
+struct
+{
+Uint8 CRNTI[2];
+} CrntiStruct[58==MCEType];
+struct
+{
+Uint5 BSRIndex;
+Uint3 BSRLCG;
+} ShortTruncatedBsr[59==MCEType];
+struct
+{
+Uint1 LCG0;
+Uint1 LCG1;
+Uint1 LCG2;
+Uint1 LCG3;
+Uint1 LCG4;
+Uint1 LCG5;
+Uint1 LCG6;
+Uint1 LCG7;
+Uint8 LCGx;
+Uint8 BufferSize = ^.Length - 1 ;
+struct
+{
+Uint8 BSRLCG = ^.LCGx;
+Uint8 BSRIndex;
+} Buffer[BufferSize];
+} LongTruncatedBsr[60==MCEType];
+struct
+{
+Uint6 PH;
+Uint2 R;
+Uint6 Pcmaxfc;
+Uint2 R1;
+} SinglePhr[57==MCEType];
+struct
+{
+Uint8 LCGx;
+struct
+{
+Uint8 BSRIndex;
+} Buffer[^.Length];
+} LongBsr[62==MCEType];
+} McePayload;
+} McePayloadSize;
+} TBInfo[TTIInfoMeta.NumTB];
+} TTIInfo[Meta.NumTTI];
+} Version4;
+struct
+{
+struct
+{
+Uint4 NumTTI;
+Uint1 IsType2Scell;
+Uint1 IsType2OtherCell;
+skip 26;
+} Meta;
+struct
+{
+struct
+{
+struct
+{
+Uint8 SlotNumber;
+skip 8;
+Uint10 FN;
+skip 6;
+} SysTime;
+Uint4 NumTB;
+skip 28;
+} TTIInfoMeta;
+struct
+{
+enum: Uint3 { _15KHZ=0,_30KHZ=1,_60KHZ=2,_120KHZ=3,_240KHZ=4 } Numerology;
+Uint4 HarqID;
+Uint4 CarrierID;
+enum: Uint3 { CONNECTED=0,CRACH=1,IRACH=2 } TBType;
+enum: Uint2 { C_RNTI=0,T_RNTI=1 } RNTIType;
+Bool1 StartPDUSeg;
+Uint10 NumCompletePDU;
+Bool1 EndPDUSeg;
+skip 4;
+Uint32 GrantSize;
+Uint32 BytesBuilt;
+Uint8 MCEReqBitmask;
+Uint8 MCEBuiltBitmask;
+Uint6 PHRReason;
+Uint3 BSRReason;
+enum: Uint4 { NO_BSR=0,SHORT_BSR=1,LONG_BSR=2,SHORT_TRUNCATED_BSR=3,LONG_TRUNCATED_BSR=4,CANCELLED_BSR=5,BSR_TYPE_INVALID=6 } BSRType;
+enum: Uint2 { MIN=0,TIMER_EXP=1,NO_GRANT=2,INVALID=3 } PHRCancelReason;
+skip 1;
+Uint6 MCELength;
+skip 26;
+struct
+{
+struct
+{
+enum: Uint6 { MC4_PHR=54,CGC=55,MC1_PHR=56,S_PHR=57,C_RNTI=58,ST_BSR=59,LT_BSR=60,S_BSR=61,L_BSR=62,BIT_RATE=53 } MCEType;
+Uint1 F[((54==MCEType||56==MCEType)||60==MCEType)||62==MCEType];
+Uint1 R[!(((54==MCEType||56==MCEType)||60==MCEType)||62==MCEType)];
+Uint1 R1;
+Uint8 Length[((54==MCEType||56==MCEType)||60==MCEType)||62==MCEType];
+struct
+{
+Uint1 R;
+Uint1 C1;
+Uint1 C2;
+Uint1 C3;
+Uint1 C4;
+Uint1 C5;
+Uint1 C6;
+Uint1 C7;
+Uint1 C8;
+Uint1 C9;
+Uint1 C10;
+Uint1 C11;
+Uint1 C12;
+Uint1 C13;
+Uint1 C14;
+Uint1 C15;
+Uint1 C16;
+Uint1 C17;
+Uint1 C18;
+Uint1 C19;
+Uint1 C20;
+Uint1 C21;
+Uint1 C22;
+Uint1 C23;
+Uint1 C24;
+Uint1 C25;
+Uint1 C26;
+Uint1 C27;
+Uint1 C28;
+Uint1 C29;
+Uint1 C30;
+Uint1 C31;
+Uint32 CxR;
+Uint32 NumCxSetBits = (((((((((((((((((((((((((((((C1 + C2) + C3) + C4) + C5) + C6) + C7) + C8) + C9) + C10) + C11) + C12) + C13) + C14) + C15) + C16) + C17) + C18) + C19) + C20) + C21) + C22) + C23) + C24) + C25) + C26) + C27) + C28) + C29) + C30) + C31;
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint8 Pcmaxfc[0==V];
+Uint8 R[0==V];
+} Type2SpCell[^.^.^.^.^.Meta.IsType2Scell];
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint8 Pcmaxfc[0==V];
+Uint8 R[0==V];
+} Type2OtherCell[^.^.^.^.^.Meta.IsType2OtherCell];
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint8 Pcmaxfc[0==V];
+Uint8 R[0==V];
+} Type1PCell;
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint8 Pcmaxfc[0==V];
+Uint8 R[0==V];
+} SCell[NumCxSetBits];
+} Mc4Phr[54==MCEType];
+/*struct
+{
+} Cgc[55==MCEType];*/
+struct
+{
+Uint1 R;
+Uint1 C1;
+Uint1 C2;
+Uint1 C3;
+Uint1 C4;
+Uint1 C5;
+Uint1 C6;
+Uint1 C7;
+Uint8 CxR;
+Uint8 NumCxSetBits = (((((C1 + C2) + C3) + C4) + C5) + C6) + C7;
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint8 Pcmaxfc[0==V];
+Uint8 R[0==V];
+} Type2SpCell[^.^.^.^.^.Meta.IsType2Scell];
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint8 Pcmaxfc[0==V];
+Uint8 R[0==V];
+} Type2OtherCell[^.^.^.^.^.Meta.IsType2OtherCell];
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint8 Pcmaxfc[0==V];
+Uint8 R[0==V];
+} Type1PCell;
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint8 Pcmaxfc[0==V];
+Uint8 R[0==V];
+} SCell[NumCxSetBits];
+} Mc1Phr[56==MCEType];
+struct
+{
+Uint5 BSRIndex;
+Uint3 BSRLCG;
+} ShortBsr[61==MCEType];
+struct
+{
+Uint8 CRNTI[2];
+} CrntiStruct[58==MCEType];
+struct
+{
+Uint5 BSRIndex;
+Uint3 BSRLCG;
+} ShortTruncatedBsr[59==MCEType];
+struct
+{
+Uint1 LCG0;
+Uint1 LCG1;
+Uint1 LCG2;
+Uint1 LCG3;
+Uint1 LCG4;
+Uint1 LCG5;
+Uint1 LCG6;
+Uint1 LCG7;
+Uint8 LCGx;
+Uint8 BufferSize = ^.Length - 1 ;
+struct
+{
+Uint8 BSRLCG = ^.LCGx;
+Uint8 BSRIndex;
+} Buffer[BufferSize];
+} LongTruncatedBsr[60==MCEType];
+struct
+{
+Uint6 PH;
+Uint2 R;
+Uint6 Pcmaxfc;
+Uint2 R1;
+} SinglePhr[57==MCEType];
+struct
+{
+Uint8 LCGx;
+struct
+{
+Uint8 BSRIndex;
+} Buffer[^.Length];
+} LongBsr[62==MCEType];
+struct
+{
+Uint6 LCID;
+enum: Uint1 { DL=0,UL=1 } ULOrDL;
+Uint6 BitrateIndex;
+Uint1 X;
+skip 2;
+} BitrateMce[53==MCEType];
+} McePayload;
+} McePayloadSize;
+} TBInfo[TTIInfoMeta.NumTB];
+} TTIInfo[Meta.NumTTI];
+} Version5;
+} Versions;
+};
+};
