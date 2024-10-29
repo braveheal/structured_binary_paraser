@@ -1,6 +1,7 @@
 # structured_binary_paraser (SBP)
 A cross platform stuctured binary parser and parsing code generator written in pure c. the project was first intend to parse Qualcomm diagnostics log (DLF) file format as well as other structed binary file formats.
-- high performance, 
+- ability to generate high performance c/c# parsing code to parse binary logging
+- parse binary file when the schema file changed, no need to re-generte parsing code, which is useful when debugging the schema file.
 
 ## Installation
 
@@ -17,10 +18,11 @@ to build SBP you need:
    - [windows build](https://github.com/deplinenoise/lemon-win32)
 
 Once you have the dependency tools installed. you can use CMAKE to build and install SBP.
-
-    cmake .  
-    cmake --build .
-
+```
+cmake .  
+cmake --build .
+```
+a sbp.exe(windows) file is ready to use.
 ## SBP schema file
 to parse a structured binary file, a schema file to define the data structure is needed. The SBP schema is a C-style format file. 
 ### Basic types       
@@ -87,4 +89,9 @@ Uint8 R[0==V];
 } SCell[NumCxSetBits];
 ```
 ## Usage
-once you have the prerequsites installed. 
+```
+sbp.exe [schema_file] [binary_file]
+```
+will generate a json format parsing result in the console and also the c parsing codes will be in the directory. some sample file can be found in the test folder.
+
+
