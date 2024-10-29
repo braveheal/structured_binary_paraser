@@ -27,10 +27,59 @@ to parse a structured binary file, a schema file to define the data structure is
     typealias integer {size = 3;}  := Uint3;   
     typealias integer {size = 3; signed = true;}  := Int3;
 ```
-  
 **floating_point types**  
+```
+typealias floating_point { size = 32; } := Float32;
+```
 **enum types**  
-**Formula types**  
+- enum types are sub types of unsigned integer.
+```
+enum : Uint32 {UnknownVersions = Default,Version1 = 1,Version2 = 2,Version3 = 3,Version4 = 4,Version5 = 5} Version;
+```
+**formula types**  
+- formula types don't occupy the bits, they are results computed by some fields.
+```
+Uint8 BufferSize = ((((((LCG0 + LCG1) + LCG2) + LCG3) + LCG4) + LCG5)+ LCG6) + LCG7;
+```
 **struct types**  
+- struct types are simliar to a c style struct.
+```
+struct
+{
+Uint8 SlotNumber;
+skip 8;
+Uint10 FN;
+skip 6;
+} SysTime;
+```
 **variant types**  
+- variant types are similar to c style union. except the actual type is determined by the variant parameter which is a enum type.
+```
+enum : Uint32 {UnknownVersions = Default,Version1 = 1,Version2 = 2,Version3 = 3,Version4 = 4,Version5 = 5} Version;
+variant <Version>
+{
+    struct
+    {
+    ...
+    } UnknownVersions;
+    struct
+    {
+    ...
+    } Version1;
+    ...
+}
+```
 **array types**
+- array type can be fixed length array or variable length
+```
+Uint8 Buffer[8];
+Uint8 Length[((54==MCEType||56==MCEType)||60==MCEType)||62==MCEType];
+struct
+{
+Uint6 PH;
+Uint1 V;
+Uint1 P;
+Uint8 Pcmaxfc[0==V];
+Uint8 R[0==V];
+} SCell[NumCxSetBits];
+```
