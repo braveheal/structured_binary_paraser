@@ -94,5 +94,6 @@ sbp.exe [schema_file] [binary_file]
 ```
 will generate a json format parsing result in the console and also the c parsing codes will be in the directory. some sample file can be found in the test folder.
 
-![image](https://github.com/user-attachments/assets/6d8d8113-5f99-4610-944e-dfce4aad1340)
+![image](https://github.com/user-attachments/assets/11376830-c58d-438a-a58e-3f10bcea6ab6)
+
 
