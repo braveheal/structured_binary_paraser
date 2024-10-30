@@ -1,5 +1,5 @@
-#ifndef _CTF_SCANNER_H
-#define _CTF_SCANNER_H
+#ifndef _SBP_SCANNER_H
+#define _SBP_SCANNER_H
 #include "ast.h"
 #include <glib.h>
 
