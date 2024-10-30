@@ -1,5 +1,5 @@
-#ifndef _RULE_RETE_H
-#define _RULE_RETE_H
+#ifndef _SBP_RULE_RETE_H
+#define _SBP_RULE_RETE_H
 #include <glib.h>
 #include <stdbool.h>
 #include "rule_ast.h"

@@ -1,3 +1,6 @@
+#ifndef _SBP_BITFIELD_H
+#define _SBP_BITFIELD_H
+
 #include <stdint.h>	/* C99 5.2.4.2 Numerical limits */
 #include <stdbool.h>	/* C99 7.16 bool type */
 //#include "limits.h"	/* C99 5.2.4.2 Numerical limits */

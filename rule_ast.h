@@ -1,5 +1,5 @@
-#ifndef _RULE_H
-#define _RULE_H
+#ifndef _SBP_RULE_H
+#define _SBP_RULE_H
 
 #include <stdint.h>
 #include <stdio.h>
@@ -106,7 +106,7 @@ struct vp_ast {
 				int64_t signed_constant;
 				uint64_t unsigned_constant;
 				double float_constant;
-				//struct ctf_ast *sbrac_exp;
+				//struct sbp_ast *sbrac_exp;
 			} u;
 		} unary_expression;
         struct

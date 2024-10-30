@@ -13,12 +13,12 @@
 #include <glib.h>
 #include "scanner.h"
 
-typedef struct ctf_ast* ast;
+typedef struct sbp_ast* ast;
 
 GNode *make_node(enum node_type type)
 {
 	ast node;
-	node = malloc(sizeof(struct ctf_ast));
+	node = malloc(sizeof(struct sbp_ast));
 	if(!node) {
 		printf("error construction.\n");
 		return NULL;

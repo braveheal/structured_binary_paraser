@@ -1,5 +1,5 @@
-#ifndef _META_H
-#define _META_H
+#ifndef _SBP_META_H
+#define _SBP_META_H
 
 #include <glib.h>
 

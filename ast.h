@@ -1,10 +1,13 @@
+#ifndef _SBP_AST_H
+#define _SBP_AST_H
+
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <glib.h>
 
-#define FOREACH_CTF_NODES(F) \
+#define FOREACH_SBP_NODES(F) \
 	F(NODE_UNKNOWN) \
 	F(NODE_ROOT) \
 	F(NODE_ERROR) \
@@ -23,18 +26,18 @@
 
 enum node_type {
 #define ENTRY(S)	S,
-	FOREACH_CTF_NODES(ENTRY)
+	FOREACH_SBP_NODES(ENTRY)
 #undef ENTRY
 	NR_NODE_TYPES,
 };
 
 static const char *node_type_to_str[] = {
 #define ENTRY(S)	[S] = #S,
-	FOREACH_CTF_NODES(ENTRY)
+	FOREACH_SBP_NODES(ENTRY)
 #undef ENTRY
 };
 
-struct ctf_ast {
+struct sbp_ast {
 
 	unsigned int lineno;
 	/*
@@ -67,7 +70,7 @@ struct ctf_ast {
 				int64_t signed_constant;
 				uint64_t unsigned_constant;
 				double float_constant;
-				//struct ctf_ast *sbrac_exp;
+				//struct sbp_ast *sbrac_exp;
 			} u;
 			enum {
 				UNARY_LINK_UNKNOWN = 0,
@@ -75,7 +78,7 @@ struct ctf_ast {
 			} link;
 		} unary_expression;
 		struct {
-			//struct ctf_ast *field_class_specifier_list;
+			//struct sbp_ast *field_class_specifier_list;
 			//struct bt_list_head field_class_declarators;
 			char *alias;
 		} field_class_alias;
@@ -94,7 +97,7 @@ struct ctf_ast {
 				TYPESPEC_ENUM,
 			} type;
 			/* For struct, variant and enum */
-			//struct ctf_ast *node;
+			//struct sbp_ast *node;
 			const char *id_type;
 		} type_specifier;
 		struct {
@@ -151,5 +154,4 @@ struct ctf_ast {
 	} u;
 };
 
-
-#endif /* _CTF_AST_H */
+#endif /* _SBP_AST_H */

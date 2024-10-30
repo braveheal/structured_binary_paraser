@@ -169,15 +169,15 @@ node_build_int (GNode    *node,
                    gpointer  data)
 {
   GNode *left_nd, *right_nd;
-  struct ctf_ast *left, *right;
+  struct sbp_ast *left, *right;
   struct field_class_int *c = (struct field_class_int *)data;
-  struct ctf_ast *ast = (struct ctf_ast*)(node->data);
+  struct sbp_ast *ast = (struct sbp_ast*)(node->data);
   if(ast->type == NODE_CTF_EXPRESSION && ast->u.ctf_expression.type == EXP_ASSIGN) {
     /*get left and right then assign to ctx*/
 	left_nd = g_node_first_child(node);
-	left = (struct ctf_ast*)(left_nd->data);
+	left = (struct sbp_ast*)(left_nd->data);
 	right_nd = g_node_last_child(node);
-	right = (struct ctf_ast*)(right_nd->data);
+	right = (struct sbp_ast*)(right_nd->data);
 	if(!left_nd || !left || !right_nd || !right){
 	  goto error;
 	}
@@ -225,16 +225,16 @@ node_build_float (GNode    *node,
                    gpointer  data)
 {
   GNode *left_nd, *right_nd;
-  struct ctf_ast *left, *right;
+  struct sbp_ast *left, *right;
   
   struct field_class_float *c = (struct field_class_float *)data;
-  struct ctf_ast *ast = (struct ctf_ast*)(node->data);
+  struct sbp_ast *ast = (struct sbp_ast*)(node->data);
   if(ast->type == NODE_CTF_EXPRESSION && ast->u.ctf_expression.type == EXP_ASSIGN) {
     /*get left and right then assign to ctx*/
 	left_nd = g_node_first_child(node);
-	left = (struct ctf_ast*)(left_nd->data);
+	left = (struct sbp_ast*)(left_nd->data);
 	right_nd = g_node_last_child(node);
-	right = (struct ctf_ast*)(right_nd->data);
+	right = (struct sbp_ast*)(right_nd->data);
 	if(!left_nd || !left || !right_nd || !right)
 	  goto error;
 	if(left->type == NODE_UNARY_EXPRESSION && left->u.unary_expression.type == UNARY_STRING) {
@@ -266,16 +266,16 @@ node_build_enum (GNode    *node,
                    gpointer  data)
 {
   GNode *nd;
-  struct ctf_ast *ast, *child_ast;
+  struct sbp_ast *ast, *child_ast;
   
   struct field_class_enum *c = (struct field_class_enum *)data;
-  ast = (struct ctf_ast*)(node->data);
+  ast = (struct sbp_ast*)(node->data);
   if(ast->type == NODE_ENUMERATOR) {
     /*get enumerator name, and get child node for the value*/
 	/*first check the enum type if signed*/
 	gboolean _signed = c->base.is_signed;
 	nd = g_node_first_child(node);
-	child_ast = (struct ctf_ast*)(nd->data);
+	child_ast = (struct sbp_ast*)(nd->data);
 
 	if(!nd || !child_ast)
 	  goto error;
@@ -333,7 +333,7 @@ visit_specifier (GNode    *specifier)
 {
   /*this will visit the specifier and generate a field class with the name*/
   struct named_field_class *new_fc = g_new0(struct named_field_class, 1);
-  struct ctf_ast *ast = (struct ctf_ast*)(specifier->data);
+  struct sbp_ast *ast = (struct sbp_ast*)(specifier->data);
   
   switch(ast->u.type_specifier.type) {
     case TYPESPEC_ID_TYPE:
@@ -416,9 +416,9 @@ visit_specifier (GNode    *specifier)
 static struct named_field_class *
 visit_declator (GNode    *specifier_nd, GNode    *declator_nd)
 {
-  struct ctf_ast *specifier, *declator; 
-  specifier = (struct ctf_ast*)(specifier_nd->data);
-  declator = (struct ctf_ast*)(declator_nd->data);  
+  struct sbp_ast *specifier, *declator; 
+  specifier = (struct sbp_ast*)(specifier_nd->data);
+  declator = (struct sbp_ast*)(declator_nd->data);  
   struct named_field_class *new_fc, *nested_fc;
   if(!specifier || !declator){
     goto error;
@@ -433,9 +433,9 @@ visit_declator (GNode    *specifier_nd, GNode    *declator_nd)
     /*visit this declator, and generate array or sequence*/
 	GNode *nested_declator = g_node_first_child(declator_nd);	
 	GNode *unary_exp = g_node_last_child(declator_nd);
-	struct ctf_ast *nested_ast = (struct ctf_ast*)(nested_declator->data);
+	struct sbp_ast *nested_ast = (struct sbp_ast*)(nested_declator->data);
 	g_assert(nested_ast->type == NODE_UNARY_EXPRESSION && nested_ast->u.unary_expression.type == UNARY_SBRAC);
-	struct ctf_ast *unary_ast = (struct ctf_ast*)(unary_exp->data);
+	struct sbp_ast *unary_ast = (struct sbp_ast*)(unary_exp->data);
 	//printf("the length of nested %i\n", unary_ast->u.unary_expression.u.unsigned_constant);	
 	if(!nested_declator || !unary_exp || !nested_ast || !unary_ast){
       goto error;
@@ -524,19 +524,19 @@ static gboolean
 node_build_struct_or_variant (GNode    *node,
                    gpointer  data)
 {
-	struct ctf_ast *ast = (struct ctf_ast*)(node->data);
+	struct sbp_ast *ast = (struct sbp_ast*)(node->data);
 	struct named_field_class *cx = (struct named_field_class *)data;	
 	if(ast->type == NODE_STRUCT_OR_VARIANT_DECLARATION) {
 		GNode *left_nd, *right_nd; 
 		GNode *showonlyif_nd = NULL;
 		GNode *formula_nd = NULL;
-		struct ctf_ast *left, *right, *declator;
+		struct sbp_ast *left, *right, *declator;
 
 		/*could be a struct or variant*/		
 		left_nd = g_node_first_child(node);
-		left = (struct ctf_ast*)(left_nd->data);
+		left = (struct sbp_ast*)(left_nd->data);
 		right_nd = g_node_nth_child(node, 1);
-		right = (struct ctf_ast*)(right_nd->data);
+		right = (struct sbp_ast*)(right_nd->data);
 		if(!left_nd || !left || !right_nd || !right){
 			goto error;
 		}
@@ -551,7 +551,7 @@ node_build_struct_or_variant (GNode    *node,
 			}
 		}
 
-		declator = (struct ctf_ast*)(right_nd->data);
+		declator = (struct sbp_ast*)(right_nd->data);
 		g_assert(declator->u.unary_expression.type == UNARY_STRING);
 
 		struct named_field_class *new_fc = visit_declator(left_nd, right_nd);
@@ -626,16 +626,16 @@ node_build_ctx (GNode    *node,
                    gpointer  data)
 {
   GNode *child_node;
-  struct ctf_ast *child;
+  struct sbp_ast *child;
   
   //struct ctx *c = (struct ctx *)data;
-  struct ctf_ast *ast = (struct ctf_ast*)(node->data);
+  struct sbp_ast *ast = (struct sbp_ast*)(node->data);
   switch(ast->type) {
 	case NODE_TYPEALIAS:
 	{
 	  /*visit first child to know which ctf type to create*/
 	  child_node = g_node_first_child(node);
-	  child = (struct ctf_ast*)(child_node->data);
+	  child = (struct sbp_ast*)(child_node->data);
 	  if(child) {
 	    if(child->type == NODE_TYPE_SPECIFIER) {		  
 		  if(child->u.type_specifier.type == TYPESPEC_INTEGER){
@@ -663,7 +663,7 @@ node_build_ctx (GNode    *node,
 	{
 	  //ec = g_new0(struct named_field_class, 1);
 	  GNode *left_nd, *right_nd;
-      struct ctf_ast *left, *right;
+      struct sbp_ast *left, *right;
 	  uint32_t id;
 	  struct named_field_class *ec = g_new0(struct named_field_class, 1);
 	  /*visit event*/
@@ -671,12 +671,12 @@ node_build_ctx (GNode    *node,
 	    /*child must be ctf_expressions*/
 		child_node = g_node_nth_child(node, i);
 		if(child_node) { 
-		  child = (struct ctf_ast*)(child_node->data);
+		  child = (struct sbp_ast*)(child_node->data);
 		  if(child->type == NODE_CTF_EXPRESSION) {		    
 		    left_nd = g_node_first_child(child_node);
-		    left = (struct ctf_ast*)(left_nd->data);
+		    left = (struct sbp_ast*)(left_nd->data);
 		    right_nd = g_node_last_child(child_node);
-		    right = (struct ctf_ast*)(right_nd->data);
+		    right = (struct sbp_ast*)(right_nd->data);
 		    if(!left_nd || !left || !right_nd || !right) {
 			  goto error;
 			}
@@ -751,7 +751,7 @@ find_root_unary(GNode *node) {
 	current = node;	
 	parent = current->parent;
 	while(parent) {
-		struct ctf_ast *a = (struct ctf_ast*)(parent->data);
+		struct sbp_ast *a = (struct sbp_ast*)(parent->data);
 		if(a->type != NODE_UNARY_EXPRESSION){
 			break;
 		} else {
@@ -951,7 +951,7 @@ static void
 node_build_formula (GNode    *node,
                    GNode *scope, GHashTable *set, GHashTable **cond_set)
 {
-	struct ctf_ast *a = (struct ctf_ast*)(node->data);
+	struct sbp_ast *a = (struct sbp_ast*)(node->data);
 	if(a->type == NODE_MATH_EXPRESSION) {
 		/*add to hash*/
 		if(node->children) {		
@@ -973,7 +973,7 @@ node_build_formula (GNode    *node,
 				case MATH_LENVAR:
 				{
 					GNode *left_nd = g_node_first_child(node);
-					struct ctf_ast *b = (struct ctf_ast*)(left_nd->data);
+					struct sbp_ast *b = (struct sbp_ast*)(left_nd->data);
 					g_assert(b->type == NODE_UNARY_EXPRESSION);
 					GNode *left_most = left_nd;
 					while(left_most) {
@@ -982,7 +982,7 @@ node_build_formula (GNode    *node,
 						else
 							left_most = g_node_first_child(left_most);
 					}
-					struct ctf_ast *c = (struct ctf_ast*)(left_most->data);
+					struct sbp_ast *c = (struct sbp_ast*)(left_most->data);
 					struct len_struct* lenstru = g_hash_table_lookup(*cond_set, left_nd);
 					g_assert (lenstru != NULL);
 					g_hash_table_remove(set, left_nd);
@@ -1542,7 +1542,7 @@ node_build_formula (GNode    *node,
 					GVariant *defaultNd = NULL;
 					for(int j=1;j<g_node_n_children(node);j++) {
 						GNode *ch = g_node_nth_child(node, j);
-						struct ctf_ast *cht = (struct ctf_ast *)(ch->data);
+						struct sbp_ast *cht = (struct sbp_ast *)(ch->data);
 						if(cht->type == NODE_STATEMENT){ 
 							if(cht->u.label_statement.type == NORMAL && cht->u.label_statement.constant == sval) {
 								retNd = compute_formula(g_node_first_child(ch), scope, cond_set);															
@@ -2902,7 +2902,7 @@ static GString *conversion(struct node_scope* a, char* b) {
 }
 
 static gboolean is_booltype(GNode *nd) {
-	struct ctf_ast *ast = (struct ctf_ast *)nd->data;
+	struct sbp_ast *ast = (struct sbp_ast *)nd->data;
 	if(ast->type == NODE_MATH_EXPRESSION) {
 		switch(ast->u.math_expression.type) {
 			case MATH_NOT:
@@ -2924,7 +2924,7 @@ static GString* build_unary(GNode *nd, struct node_scope *a) {
 	GString *t = g_string_new(NULL);
 	GString* left_str = NULL;
 	GString* right_str = NULL;
-	struct ctf_ast *ast = (struct ctf_ast *)nd->data;
+	struct sbp_ast *ast = (struct sbp_ast *)nd->data;
 	g_assert(ast->type == NODE_MATH_EXPRESSION || ast->type == NODE_UNARY_EXPRESSION);
 	if(ast->type == NODE_MATH_EXPRESSION) {
 		switch(ast->u.math_expression.type) {
@@ -3018,7 +3018,7 @@ static GString* build_unary(GNode *nd, struct node_scope *a) {
 				GNode *sub = nd;
 				while(!G_NODE_IS_LEAF(sub)) {
 					sub = g_node_first_child(sub);
-					struct ctf_ast *subast = (struct ctf_ast *)sub->data;
+					struct sbp_ast *subast = (struct sbp_ast *)sub->data;
 					g_string_append_printf(t, "->%s", subast->u.unary_expression.u.string);
 				}
 				//g_string_replace(t, "^.","parent->", 0);
@@ -3208,7 +3208,7 @@ static gboolean write_struct(struct field_class_struct *fc,char *sname, GList **
 						g_string_append_printf(parser, "stru->%s[i] = read_%s(buf, at%s);\n}\n", name, bname?bname:aname, bname?"":", stru");
 					} else if(arr->arrType == SEQUENCE) {
 						g_string_append_printf(fields, "%s%s %s*%s;\n", isStruct?"struct ":"",aname, isStruct?"*":"",name);
-						struct ctf_ast *lenref = (struct ctf_ast *)arr->u.length_ref->data;
+						struct sbp_ast *lenref = (struct sbp_ast *)arr->u.length_ref->data;
 						g_assert(lenref->type == NODE_UNARY_EXPRESSION);
 						GString *lengthref = build_unary(arr->u.length_ref, prefix->ns);	
 
