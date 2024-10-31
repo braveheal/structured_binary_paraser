@@ -1,4 +1,4 @@
-# structured_binary_paraser (SBP)
+# structured_binary_parser (SBP)
 A cross platform stuctured binary parser and parsing code generator written in pure c. the project was first intend to parse Qualcomm diagnostics log (DLF) file format as well as other structed binary file formats.
 - ability to generate high performance c/c# parsing code to parse binary logging
 - parse binary file when the schema file changed, no need to re-generte parsing code, which is useful when debugging the schema file.
